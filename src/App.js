@@ -23,7 +23,7 @@ function leftPad(str, len, ch) {
 }
 
 function mask(num) {
-  return `${num.substr(0, 3)} ${num.substr(3, 3)} ${num.substr(6, 3)} ${num.substr(9)}`
+  return `${num.substr(0, 3)}-${num.substr(3, 3)}-${num.substr(6, 3)} ${num.substr(9)}`
 }
 
 class App extends React.Component {
@@ -31,6 +31,9 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {number: generateSnils()}
+    this.copyToClipboard = () => {
+      navigator.clipboard.writeText(mask(this.state.number));
+    }
   }
 
   render() {
@@ -42,7 +45,10 @@ class App extends React.Component {
         </div>
 
         <div className="jumbotron">
-          <span className="number">{mask(this.state.number)}</span>
+          <div>
+            <span className="number">{mask(this.state.number)}</span><br/>
+            <span onClick={this.copyToClipboard} style={{cursor: 'pointer', color: '#5e5e5e'}}>скопировать</span>
+          </div>
           <p>
             <button className="btn btn-lg btn-success btn-gen-snils" onClick={() => this.setState({number: generateSnils()})}>
               Новое значение
